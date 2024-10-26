@@ -1,0 +1,10 @@
+data/tmp/
+data/prototypes/
+prototypes/
+results/prototype/
+tmp/
+*.csv
+*.tsv
+*.xls
+*.xlsx
+*.txt

@@ -1,0 +1,15 @@
+slop_length: 10000
+markertype: DNASE
+tss_filepath: ./data/processed_gencode_tsses.bed
+humanchrom_filepath: ./data/human_chromosome_lengths.txt
+bedfile_folder: ./data/DNASE/corrected_DNASE_data
+indiv_bedfile: False
+percentiles:
+  upper: 95
+  lower: 5
+output_paths:
+  tmp_bed: ./data/tmp/1
+  tmp_outname: ./data/tmp/1
+  pileup_res_outname: ./results/1_data_processing/DNASE
+  plot_res_outname: ./results/1_data_processing/DNASE
+log_filepath: ./results/1.log

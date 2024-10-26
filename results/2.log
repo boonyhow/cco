@@ -1,0 +1,101 @@
+2024-10-09 11:40:28,876 - WARNING - Sample size None is larger than available files. Using all files.
+2024-10-09 11:40:28,877 - INFO - Number of files to be analyzed: 15
+2024-10-09 11:46:42,041 - INFO - File ./results/1_data_processing/DNASE/GM12878_ENCFF073ORT_DNASE_10000.csv split into regions and saved to ./results/2_basket_generation/split/GM12878_ENCFF073ORT_DNASE_10000_split_data.csv
+2024-10-09 11:46:42,077 - INFO - File ./results/1_data_processing/DNASE/stomach_ENCFF573XIS_DNASE_10000.csv split into regions and saved to ./results/2_basket_generation/split/stomach_ENCFF573XIS_DNASE_10000_split_data.csv
+2024-10-09 11:46:42,517 - INFO - Baskets generated for ./results/2_basket_generation/split/GM12878_ENCFF073ORT_DNASE_10000_split_data.csv and saved to ./results/2_basket_generation/baskets/core_promoter_fixedL_100_upstream_GM12878_ENCFF073ORT_DNASE_10000_basket.csv
+2024-10-09 11:46:42,562 - INFO - Baskets generated for ./results/2_basket_generation/split/stomach_ENCFF573XIS_DNASE_10000_split_data.csv and saved to ./results/2_basket_generation/baskets/core_promoter_fixedL_100_upstream_stomach_ENCFF573XIS_DNASE_10000_basket.csv
+2024-10-09 11:46:49,221 - INFO - File ./results/1_data_processing/DNASE/A549_ENCFF302JWZ_DNASE_10000.csv split into regions and saved to ./results/2_basket_generation/split/A549_ENCFF302JWZ_DNASE_10000_split_data.csv
+2024-10-09 11:46:49,727 - INFO - Baskets generated for ./results/2_basket_generation/split/A549_ENCFF302JWZ_DNASE_10000_split_data.csv and saved to ./results/2_basket_generation/baskets/core_promoter_fixedL_100_upstream_A549_ENCFF302JWZ_DNASE_10000_basket.csv
+2024-10-09 11:46:50,044 - INFO - File ./results/1_data_processing/DNASE/MCF7_ENCFF522NDW_DNASE_10000.csv split into regions and saved to ./results/2_basket_generation/split/MCF7_ENCFF522NDW_DNASE_10000_split_data.csv
+2024-10-09 11:46:50,100 - INFO - File ./results/1_data_processing/DNASE/BCELL_ENCFF650BNV_DNASE_10000.csv split into regions and saved to ./results/2_basket_generation/split/BCELL_ENCFF650BNV_DNASE_10000_split_data.csv
+2024-10-09 11:46:50,572 - INFO - Baskets generated for ./results/2_basket_generation/split/MCF7_ENCFF522NDW_DNASE_10000_split_data.csv and saved to ./results/2_basket_generation/baskets/core_promoter_fixedL_100_upstream_MCF7_ENCFF522NDW_DNASE_10000_basket.csv
+2024-10-09 11:46:50,622 - INFO - Baskets generated for ./results/2_basket_generation/split/BCELL_ENCFF650BNV_DNASE_10000_split_data.csv and saved to ./results/2_basket_generation/baskets/core_promoter_fixedL_100_upstream_BCELL_ENCFF650BNV_DNASE_10000_basket.csv
+2024-10-09 11:46:52,011 - INFO - File ./results/1_data_processing/DNASE/TCELL_ENCFF762IIH_DNASE_10000.csv split into regions and saved to ./results/2_basket_generation/split/TCELL_ENCFF762IIH_DNASE_10000_split_data.csv
+2024-10-09 11:46:52,592 - INFO - Baskets generated for ./results/2_basket_generation/split/TCELL_ENCFF762IIH_DNASE_10000_split_data.csv and saved to ./results/2_basket_generation/baskets/core_promoter_fixedL_100_upstream_TCELL_ENCFF762IIH_DNASE_10000_basket.csv
+2024-10-09 11:46:54,382 - INFO - File ./results/1_data_processing/DNASE/K562_ENCFF274YGF_DNASE_10000.csv split into regions and saved to ./results/2_basket_generation/split/K562_ENCFF274YGF_DNASE_10000_split_data.csv
+2024-10-09 11:46:55,302 - INFO - Baskets generated for ./results/2_basket_generation/split/K562_ENCFF274YGF_DNASE_10000_split_data.csv and saved to ./results/2_basket_generation/baskets/core_promoter_fixedL_100_upstream_K562_ENCFF274YGF_DNASE_10000_basket.csv
+2024-10-09 11:46:55,517 - INFO - File ./results/1_data_processing/DNASE/prefrontal-cortex_ENCFF493KKC_DNASE_10000.csv split into regions and saved to ./results/2_basket_generation/split/prefrontal-cortex_ENCFF493KKC_DNASE_10000_split_data.csv
+2024-10-09 11:46:55,749 - INFO - File ./results/1_data_processing/DNASE/HepG2_ENCFF897NME_DNASE_10000.csv split into regions and saved to ./results/2_basket_generation/split/HepG2_ENCFF897NME_DNASE_10000_split_data.csv
+2024-10-09 11:46:56,011 - INFO - Baskets generated for ./results/2_basket_generation/split/prefrontal-cortex_ENCFF493KKC_DNASE_10000_split_data.csv and saved to ./results/2_basket_generation/baskets/core_promoter_fixedL_100_upstream_prefrontal-cortex_ENCFF493KKC_DNASE_10000_basket.csv
+2024-10-09 11:46:56,257 - INFO - Baskets generated for ./results/2_basket_generation/split/HepG2_ENCFF897NME_DNASE_10000_split_data.csv and saved to ./results/2_basket_generation/baskets/core_promoter_fixedL_100_upstream_HepG2_ENCFF897NME_DNASE_10000_basket.csv
+2024-10-09 11:46:56,506 - INFO - File ./results/1_data_processing/DNASE/heart_ENCFF802TWB_DNASE_10000.csv split into regions and saved to ./results/2_basket_generation/split/heart_ENCFF802TWB_DNASE_10000_split_data.csv
+2024-10-09 11:46:57,058 - INFO - Baskets generated for ./results/2_basket_generation/split/heart_ENCFF802TWB_DNASE_10000_split_data.csv and saved to ./results/2_basket_generation/baskets/core_promoter_fixedL_100_upstream_heart_ENCFF802TWB_DNASE_10000_basket.csv
+2024-10-09 11:46:58,784 - INFO - File ./results/1_data_processing/DNASE/pancreas_ENCFF949DIO_DNASE_10000.csv split into regions and saved to ./results/2_basket_generation/split/pancreas_ENCFF949DIO_DNASE_10000_split_data.csv
+2024-10-09 11:46:59,323 - INFO - Baskets generated for ./results/2_basket_generation/split/pancreas_ENCFF949DIO_DNASE_10000_split_data.csv and saved to ./results/2_basket_generation/baskets/core_promoter_fixedL_100_upstream_pancreas_ENCFF949DIO_DNASE_10000_basket.csv
+2024-10-09 11:47:02,059 - INFO - File ./results/1_data_processing/DNASE/adipocytes_ENCFF512CTB_DNASE_10000.csv split into regions and saved to ./results/2_basket_generation/split/adipocytes_ENCFF512CTB_DNASE_10000_split_data.csv
+2024-10-09 11:47:02,826 - INFO - Baskets generated for ./results/2_basket_generation/split/adipocytes_ENCFF512CTB_DNASE_10000_split_data.csv and saved to ./results/2_basket_generation/baskets/core_promoter_fixedL_100_upstream_adipocytes_ENCFF512CTB_DNASE_10000_basket.csv
+2024-10-09 11:47:04,421 - INFO - File ./results/1_data_processing/DNASE/spleen_ENCFF891FHW_DNASE_10000.csv split into regions and saved to ./results/2_basket_generation/split/spleen_ENCFF891FHW_DNASE_10000_split_data.csv
+2024-10-09 11:47:05,503 - INFO - File ./results/1_data_processing/DNASE/H1_ENCFF643ZJV_DNASE_10000.csv split into regions and saved to ./results/2_basket_generation/split/H1_ENCFF643ZJV_DNASE_10000_split_data.csv
+2024-10-09 11:47:09,905 - INFO - File ./results/1_data_processing/DNASE/kidney_ENCFF132KNJ_DNASE_10000.csv split into regions and saved to ./results/2_basket_generation/split/kidney_ENCFF132KNJ_DNASE_10000_split_data.csv
+2024-10-09 11:47:10,412 - INFO - Baskets generated for ./results/2_basket_generation/split/H1_ENCFF643ZJV_DNASE_10000_split_data.csv and saved to ./results/2_basket_generation/baskets/core_promoter_fixedL_100_upstream_H1_ENCFF643ZJV_DNASE_10000_basket.csv
+2024-10-09 11:47:13,549 - INFO - Baskets generated for ./results/2_basket_generation/split/spleen_ENCFF891FHW_DNASE_10000_split_data.csv and saved to ./results/2_basket_generation/baskets/core_promoter_fixedL_100_upstream_spleen_ENCFF891FHW_DNASE_10000_basket.csv
+2024-10-09 11:47:14,402 - INFO - Baskets generated for ./results/2_basket_generation/split/kidney_ENCFF132KNJ_DNASE_10000_split_data.csv and saved to ./results/2_basket_generation/baskets/core_promoter_fixedL_100_upstream_kidney_ENCFF132KNJ_DNASE_10000_basket.csv
+2024-10-09 11:47:50,610 - INFO - Combined baskets saved to results/2_basket_generation/h3k4me3_15_cell_lines.csv
+2024-10-22 06:22:01,701 - WARNING - Sample size None is larger than available files. Using all files.
+2024-10-22 06:22:01,701 - INFO - Number of files to be analyzed: 15
+2024-10-22 06:27:00,193 - WARNING - Sample size None is larger than available files. Using all files.
+2024-10-22 06:27:00,194 - INFO - Number of files to be analyzed: 15
+2024-10-22 06:27:00,927 - WARNING - Earlier split of A549_ENCFF302JWZ_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-22 06:27:00,928 - WARNING - Earlier baskets of A549_ENCFF302JWZ_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-22 06:27:00,928 - WARNING - Earlier split of GM12878_ENCFF073ORT_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-22 06:27:00,929 - WARNING - Earlier baskets of GM12878_ENCFF073ORT_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-22 06:27:00,929 - WARNING - Earlier split of adipocytes_ENCFF512CTB_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-22 06:27:00,929 - WARNING - Earlier split of K562_ENCFF274YGF_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-22 06:27:00,929 - WARNING - Earlier split of heart_ENCFF802TWB_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-22 06:27:00,929 - WARNING - Earlier split of pancreas_ENCFF949DIO_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-22 06:27:00,930 - WARNING - Earlier split of BCELL_ENCFF650BNV_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-22 06:27:00,930 - WARNING - Earlier baskets of adipocytes_ENCFF512CTB_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-22 06:27:00,930 - WARNING - Earlier baskets of heart_ENCFF802TWB_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-22 06:27:00,930 - WARNING - Earlier baskets of K562_ENCFF274YGF_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-22 06:27:00,930 - WARNING - Earlier baskets of pancreas_ENCFF949DIO_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-22 06:27:00,930 - WARNING - Earlier split of MCF7_ENCFF522NDW_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-22 06:27:00,930 - WARNING - Earlier split of spleen_ENCFF891FHW_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-22 06:27:00,930 - WARNING - Earlier split of HepG2_ENCFF897NME_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-22 06:27:00,931 - WARNING - Earlier baskets of MCF7_ENCFF522NDW_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-22 06:27:00,930 - WARNING - Earlier split of kidney_ENCFF132KNJ_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-22 06:27:00,931 - WARNING - Earlier split of H1_ENCFF643ZJV_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-22 06:27:00,931 - WARNING - Earlier baskets of spleen_ENCFF891FHW_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-22 06:27:00,931 - WARNING - Earlier split of stomach_ENCFF573XIS_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-22 06:27:00,931 - WARNING - Earlier baskets of HepG2_ENCFF897NME_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-22 06:27:00,931 - WARNING - Earlier baskets of kidney_ENCFF132KNJ_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-22 06:27:00,931 - WARNING - Earlier baskets of H1_ENCFF643ZJV_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-22 06:27:00,931 - WARNING - Earlier baskets of stomach_ENCFF573XIS_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-22 06:27:00,931 - WARNING - Earlier split of TCELL_ENCFF762IIH_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-22 06:27:00,931 - WARNING - Earlier baskets of BCELL_ENCFF650BNV_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-22 06:27:00,932 - WARNING - Earlier baskets of TCELL_ENCFF762IIH_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-22 06:27:00,935 - WARNING - Earlier split of prefrontal-cortex_ENCFF493KKC_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-22 06:27:00,936 - WARNING - Earlier baskets of prefrontal-cortex_ENCFF493KKC_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-22 06:27:03,016 - INFO - Combined baskets saved to results/2_basket_generation/dnase/dnase_15_cell_lines.csv
+2024-10-24 22:25:47,297 - WARNING - Sample size None is larger than available files. Using all files.
+2024-10-24 22:25:47,297 - INFO - Number of files to be analyzed: 15
+2024-10-24 22:25:47,954 - WARNING - Earlier split of MCF7_ENCFF522NDW_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-24 22:25:47,954 - WARNING - Earlier split of A549_ENCFF302JWZ_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-24 22:25:47,954 - WARNING - Earlier split of K562_ENCFF274YGF_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-24 22:25:47,954 - WARNING - Earlier split of adipocytes_ENCFF512CTB_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-24 22:25:47,954 - WARNING - Earlier split of heart_ENCFF802TWB_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-24 22:25:47,954 - WARNING - Earlier split of spleen_ENCFF891FHW_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-24 22:25:47,954 - WARNING - Earlier split of H1_ENCFF643ZJV_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-24 22:25:47,954 - WARNING - Earlier split of prefrontal-cortex_ENCFF493KKC_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-24 22:25:47,954 - WARNING - Earlier split of TCELL_ENCFF762IIH_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-24 22:25:47,954 - WARNING - Earlier split of HepG2_ENCFF897NME_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-24 22:25:47,958 - WARNING - Earlier baskets of adipocytes_ENCFF512CTB_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-24 22:25:47,954 - WARNING - Earlier split of pancreas_ENCFF949DIO_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-24 22:25:47,954 - WARNING - Earlier split of kidney_ENCFF132KNJ_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-24 22:25:47,955 - WARNING - Earlier split of BCELL_ENCFF650BNV_DNASE_10000.csv has been found and the code will be using that version.
+2024-10-24 22:25:47,957 - WARNING - Earlier baskets of MCF7_ENCFF522NDW_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-24 22:25:47,957 - WARNING - Earlier baskets of A549_ENCFF302JWZ_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-24 22:25:47,957 - WARNING - Earlier baskets of K562_ENCFF274YGF_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-24 22:25:47,958 - WARNING - Earlier baskets of H1_ENCFF643ZJV_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-24 22:25:47,958 - WARNING - Earlier baskets of kidney_ENCFF132KNJ_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-24 22:25:47,958 - WARNING - Earlier baskets of spleen_ENCFF891FHW_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-24 22:25:47,958 - WARNING - Earlier baskets of pancreas_ENCFF949DIO_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-24 22:25:47,958 - WARNING - Earlier baskets of prefrontal-cortex_ENCFF493KKC_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-24 22:25:47,958 - WARNING - Earlier baskets of HepG2_ENCFF897NME_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-24 22:25:47,959 - WARNING - Earlier baskets of TCELL_ENCFF762IIH_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-24 22:25:47,961 - WARNING - Earlier baskets of BCELL_ENCFF650BNV_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-24 22:25:47,959 - WARNING - Earlier baskets of heart_ENCFF802TWB_DNASE_10000.csv has been found, no new baskets will be generated
+2024-10-24 22:27:36,468 - INFO - File ./results/1_data_processing/DNASE/GM12878_ENCFF759OLD_DNASE_10000.csv split into regions and saved to ./results/2_basket_generation/dnase/split/GM12878_ENCFF759OLD_DNASE_10000_split_data.csv
+2024-10-24 22:27:36,853 - INFO - Baskets generated for ./results/2_basket_generation/dnase/split/GM12878_ENCFF759OLD_DNASE_10000_split_data.csv and saved to ./results/2_basket_generation/dnase/baskets/core_promoter_fixedL_100_upstream_GM12878_ENCFF759OLD_DNASE_10000_basket.csv
+2024-10-24 22:27:42,175 - INFO - File ./results/1_data_processing/DNASE/stomach_ENCFF731YGM_DNASE_10000.csv split into regions and saved to ./results/2_basket_generation/dnase/split/stomach_ENCFF731YGM_DNASE_10000_split_data.csv
+2024-10-24 22:27:42,595 - INFO - Baskets generated for ./results/2_basket_generation/dnase/split/stomach_ENCFF731YGM_DNASE_10000_split_data.csv and saved to ./results/2_basket_generation/dnase/baskets/core_promoter_fixedL_100_upstream_stomach_ENCFF731YGM_DNASE_10000_basket.csv
+2024-10-24 22:27:44,677 - INFO - Combined baskets saved to results/2_basket_generation/dnase/dnase_15_cell_lines.csv

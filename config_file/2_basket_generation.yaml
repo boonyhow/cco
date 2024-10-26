@@ -1,0 +1,16 @@
+log_file: ./results/2.log
+marker_type: dnase
+split_out: ./results/2_basket_generation/dnase/split
+basket_out: ./results/2_basket_generation/dnase/baskets
+pileup_folder: ./results/1_data_processing/DNASE
+merged_out: ./results/2_basket_generation/dnase
+tss_path: ./data/processed_gencode_tsses.bed
+gencode_path: ./data/processed_gencode_tsses.bed
+humanchrom_path: ./data/human_chromosome_lengths.txt
+slop_length: 10000
+downstream: False
+enhancer_promoter_boundary: 2000
+proximal: true
+proximal_core_boundary: 500
+region_for_basket: core_promoter
+length_for_basket: 100

@@ -1,0 +1,11 @@
+paths:
+  essential_genes_file: ./data/essential_genes_ensemble.csv
+  marker_merged_file: ./results/2_basket_generation/dnase/dnase_15_cell_lines.csv
+  rnaseq_file: ./data/rna_seq_processed/GSE249195_adipocytes.txt
+  figure_output: ./results/3_cco_results/dnase/full_15/adipocytes
+  results_folder: ./results/3_cco_results/dnase/full_15/adipocytes
+
+variables:
+  marker_type: DNase
+  output_file_name: gene_expression_plots
+

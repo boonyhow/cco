@@ -1,0 +1,28 @@
+2024-10-24 21:48:50,551 - INFO - Processing file: ./data/DNASE/corrected_DNASE_data/stomach_ENCFF731YGM_DNASE.bed
+2024-10-24 21:48:50,552 - INFO - Processing file: ./data/DNASE/corrected_DNASE_data/GM12878_ENCFF759OLD_DNASE.bed
+2024-10-24 21:48:50,559 - INFO - Filtering noise for ./data/DNASE/corrected_DNASE_data/GM12878_ENCFF759OLD_DNASE.bed
+2024-10-24 21:48:50,559 - INFO - Filtering noise for ./data/DNASE/corrected_DNASE_data/stomach_ENCFF731YGM_DNASE.bed
+2024-10-24 21:48:51,021 - INFO - Generating coverage for ./data/tmp/1/GM12878_ENCFF759OLD_DNASE_10000.bed
+2024-10-24 21:48:51,173 - INFO - Generating coverage for ./data/tmp/1/stomach_ENCFF731YGM_DNASE_10000.bed
+2024-10-24 21:50:06,511 - INFO - Processing file: ./data/DNASE/corrected_DNASE_data/stomach_ENCFF731YGM_DNASE.bed
+2024-10-24 21:50:06,512 - INFO - Processing file: ./data/DNASE/corrected_DNASE_data/GM12878_ENCFF759OLD_DNASE.bed
+2024-10-24 21:50:06,515 - INFO - Filtered BED file already exists: ./data/tmp/1/GM12878_ENCFF759OLD_DNASE_10000.bed
+2024-10-24 21:50:06,515 - INFO - Filtered BED file already exists: ./data/tmp/1/stomach_ENCFF731YGM_DNASE_10000.bed
+2024-10-24 21:50:06,516 - INFO - Coverage file already exists: ./data/tmp/1/GM12878_ENCFF759OLD_DNASE_10000.txt
+2024-10-24 21:50:06,515 - INFO - Coverage file already exists: ./data/tmp/1/stomach_ENCFF731YGM_DNASE_10000.txt
+2024-10-24 21:50:06,522 - INFO - Converting coverage to pileup for ./data/tmp/1/stomach_ENCFF731YGM_DNASE_10000.txt
+2024-10-24 21:50:06,522 - INFO - Converting coverage to pileup for ./data/tmp/1/GM12878_ENCFF759OLD_DNASE_10000.txt
+2024-10-24 21:50:42,991 - ERROR - Cannot convert depth at line into valid integer. Exiting.
+2024-10-24 21:50:43,507 - ERROR - Cannot convert depth at line into valid integer. Exiting.
+2024-10-24 21:54:14,856 - INFO - Processing file: ./data/DNASE/corrected_DNASE_data/stomach_ENCFF731YGM_DNASE.bed
+2024-10-24 21:54:14,857 - INFO - Processing file: ./data/DNASE/corrected_DNASE_data/GM12878_ENCFF759OLD_DNASE.bed
+2024-10-24 21:54:14,858 - INFO - Filtering noise for ./data/DNASE/corrected_DNASE_data/GM12878_ENCFF759OLD_DNASE.bed
+2024-10-24 21:54:14,858 - INFO - Filtering noise for ./data/DNASE/corrected_DNASE_data/stomach_ENCFF731YGM_DNASE.bed
+2024-10-24 21:54:15,189 - INFO - Generating coverage for ./data/tmp/1/GM12878_ENCFF759OLD_DNASE_10000.bed
+2024-10-24 21:54:16,783 - INFO - Generating coverage for ./data/tmp/1/stomach_ENCFF731YGM_DNASE_10000.bed
+2024-10-24 22:03:34,313 - INFO - Converting coverage to pileup for ./data/tmp/1/GM12878_ENCFF759OLD_DNASE_10000.txt
+2024-10-24 22:03:35,461 - INFO - Converting coverage to pileup for ./data/tmp/1/stomach_ENCFF731YGM_DNASE_10000.txt
+2024-10-24 22:21:03,165 - INFO - Plotting pileup generated from ./results/1_data_processing/DNASE/GM12878_ENCFF759OLD_DNASE_10000.csv
+2024-10-24 22:21:04,248 - INFO - Plotting pileup generated from ./results/1_data_processing/DNASE/stomach_ENCFF731YGM_DNASE_10000.csv
+2024-10-24 22:22:40,772 - INFO - Completed processing of ./data/DNASE/corrected_DNASE_data/GM12878_ENCFF759OLD_DNASE.bed. Time taken: 1705.92 seconds.
+2024-10-24 22:22:47,381 - INFO - Completed processing of ./data/DNASE/corrected_DNASE_data/stomach_ENCFF731YGM_DNASE.bed. Time taken: 1712.53 seconds.
