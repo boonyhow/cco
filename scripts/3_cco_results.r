@@ -42,6 +42,7 @@ GeneExpressionAnalysis <- setRefClass(
       marker_info <<- na.omit(marker_info)
       marker_info[, "V1" := NULL]
 
+
       # Check if the file is CSV or XLSX and load accordingly
       file_extension <- tools::file_ext(config$paths$rnaseq_file)
       print(file_extension)
@@ -269,73 +270,96 @@ GeneExpressionAnalysis <- setRefClass(
 
     generate_volcano_plot = function(top_tags) {
       print("Generating volcano plot and merging results...")
+      essential_genes <- read.csv(config$paths$essential_genes_file, stringsAsFactors = FALSE)
+  
       
       # Merge top_tags with merged_rna_marker
       top_tags_df <- as.data.frame(top_tags)
-      top_tags_df$genes <- gsub("\\..*", "", top_tags_df$genes)
-      results <- na.omit(merge(top_tags_df, merged_rna_marker[, c('gene_id', 'gene_name', 'cco_levels')], by.x = 'genes' ,by.y = 'gene_id', all.x = TRUE))
-      print("Merged top_tags with merged_rna_k4me3.")
-     
-
-      # Add additional metadata
-      results$rank <- rank(results$PValue)
-      results$entrez_id <- mapIds(org.Hs.eg.db, keys = results$gene_name, keytype = "SYMBOL", column = "ENTREZID", multiVals = "first")
-      results$ensembl <- results$gene_id
-      results <- distinct(results)
-      # Save the merged results
-      write_xlsx(list(DEGs = results), paste0(config$paths$figure_output, "/deg_results.xlsx"))
-      print("DEG results saved to Excel.")
+      top_tags_df$genes <- gsub("\\..*", "", top_tags_df$genes)  # Remove suffix from gene IDs
       
-      # Volcano plot preparation
+      # Ensure 'gene_id' is consistent in both tables for the merge
+      merged_data <- merged_rna_marker[, c('gene_id', 'gene_name', 'cco_levels')]
+      merged_data$gene_id <- as.character(merged_data$gene_id)
+      
+      # Perform the merge operation
+      results <- na.omit(merge(
+        top_tags_df, merged_data, 
+        by.x = 'genes', by.y = 'gene_id', all.x = TRUE
+      ))
+
+      # Ensure consistent data types for comparison with essential genes
+      results$genes <- as.character(results$genes)
+      print(head(results$genes))
+      # Debugging: Check if essential genes are properly matched
+      results$essential_genes <- results$genes %in% essential_genes$x  # Mark essential genes
+      print(table(results$essential_genes))  # Check distribution of TRUE/FALSE values
+
+      # Add other metadata
+      results$rank <- rank(results$PValue)
       results$state <- ifelse(results$FDR < 0.05, "sig", "not_sig")
       results$label <- ifelse(results$rank <= 25, results$gene_name, NA_character_)
-      pdf(paste0(config$paths$figure_output, "/volcano_plot.pdf"), width = 20, height = 8)
+
+      # Save results to Excel
+      write_xlsx(list(DEGs = results), paste0(config$paths$figure_output, "/deg_results.xlsx"))
+
+      # Generate the volcano plot with facets for essential genes
+      pdf(paste0(config$paths$figure_output, "/volcano_plot_essential.pdf"), width = 60, height = 8)
+      
       p <- ggplot(results, aes(x = logFC, y = -log10(PValue), col = -log10(FDR), label = label)) +
-        geom_point() + 
-        facet_wrap(~ cco_levels, scales = "free") +  # Facet by cco_levels
+        geom_point() +
+        facet_grid(essential_genes ~ cco_levels, scales = "free") +  # Facet by essential genes
         scale_color_gradient2(low = "grey", mid = "grey", high = "red", midpoint = -log10(0.05)) +
         geom_vline(xintercept = 0, size = 0.5, linetype = "dotted") +
         geom_hline(yintercept = 0, size = 0.5, linetype = "dotted") +
-        theme_bw() + geom_text_repel(col = "black") +
-        ggtitle("Volcano plot of DGE with columns as CCO levels from H3K4me3")
-      
+        theme_bw() +
+        geom_text_repel(col = "black") +
+        ggtitle("Volcano plot of DGE with facets for essential genes")
+
       print(p)
       dev.off()
-      print("Volcano plot saved to PDF.")
+
+      print("Volcano plot saved with facets.")
+
+      # Generate line plot for DGE and essentiality
       .self$gen_dge_essentiality_lineplot(results)
     },
     scatter_density_plot = function() {
-        plot_with_pearson <- function(plotting_data, first_sample, last_sample) {
-          # Calculate Pearson correlation for each cco_levels level
-          correlation_results <- plotting_data %>%
-            group_by(cco_levels) %>%
-            summarize(cor_value = cor(!!sym(first_sample), !!sym(last_sample), method = "pearson", use = "complete.obs"))
-          
-          # Create scatter plot with Pearson correlation displayed for each cco_levels facet
-          p <- ggplot(plotting_data, aes_string(x = first_sample, y = last_sample)) +
-            geom_bin2d(binwidth = c(0.5, 0.5)) +  # Optional: Add bin2d for density representation
-            scale_fill_viridis_c(limits = c(0, 100)) +  # Keep scale consistent across plots
-            facet_wrap(~ cco_levels, scales = "free", labeller = labeller(cco_levels = function(x) paste0("CCO ", x))) +
-            # Add Pearson correlation values to each facet
-            geom_text(
-              data = correlation_results,
-              aes(x = Inf, y = Inf, label = round(cor_value, 2)),
-              inherit.aes = FALSE, vjust = 1, hjust = 1, size = 5, color = "red"
-            ) +
-            theme_minimal() +
-            labs(
-              x = glue::glue("Log2TPM ({first_sample})"),
-              y = glue::glue("Log2TPM ({last_sample})"),
-              title = glue::glue("Scatter plot of Log2TPM between {first_sample} and {last_sample}")
-            ) +
-            theme(
-              strip.text = element_text(size = 10),
-              axis.text = element_text(size = 10),
-              axis.title = element_text(size = 12, face = "bold")
-            )
-          
-          return(list(plot = p, correlation_results = correlation_results))
-        }
+      plot_with_correlations <- function(plotting_data, first_sample, last_sample) {
+        # Calculate both Spearman and Pearson correlations
+        correlation_results <- plotting_data %>%
+          group_by(essential_genes, cco_levels) %>%
+          summarize(
+            spearman = cor(!!sym(first_sample), !!sym(last_sample), method = "spearman", use = "complete.obs"),
+            pearson = cor(!!sym(first_sample), !!sym(last_sample), method = "pearson", use = "complete.obs"),
+            .groups = 'drop'
+          )
+
+        # Create scatter plot with Spearman correlations displayed
+        p <- ggplot(plotting_data, aes_string(x = first_sample, y = last_sample)) +
+          geom_bin2d(binwidth = c(0.5, 0.5)) +  # Add density bins
+          scale_fill_viridis_c(limits = c(0, 100)) +  # Keep fill scale consistent
+          facet_grid(essential_genes ~ cco_levels, scales = "free", 
+                    labeller = labeller(cco_levels = function(x) paste0("CCO ", x))) +
+          # Display Spearman correlation values in each facet
+          geom_text(data = correlation_results, 
+                    aes(x = Inf, y = Inf, label = round(spearman, 2)),
+                    inherit.aes = FALSE, vjust = 1, hjust = 1, size = 5, color = "red") +
+          theme_minimal() +
+          labs(
+            x = glue::glue("Log2TPM ({first_sample})"),
+            y = glue::glue("Log2TPM ({last_sample})"),
+            title = glue::glue("Scatter Plot: {first_sample} vs {last_sample}")
+          ) +
+          theme(
+            strip.text = element_text(size = 10),
+            axis.text = element_text(size = 10),
+            axis.title = element_text(size = 12, face = "bold")
+          )
+
+        return(list(plot = p, correlation_results = correlation_results))
+      }
+
+      essential_genes <- read.csv(config$paths$essential_genes_file, stringsAsFactors = FALSE)
 
       all_correlation_results <- data.frame()
       merged_rna_marker$day <- as.numeric(gsub("day", "", merged_rna_marker$day))
@@ -344,7 +368,7 @@ GeneExpressionAnalysis <- setRefClass(
       last_day <- max(merged_rna_marker$day)
 
       log2tpm_col <- ifelse("log2tpm" %in% colnames(merged_rna_marker), "log2tpm", "log2_tpm")
-      # Extract samples corresponding to first and last day
+
       first_day_samples <- merged_rna_marker %>%
         filter(day == first_day) %>%
         pull(sample) %>%
@@ -357,48 +381,93 @@ GeneExpressionAnalysis <- setRefClass(
 
       plotting_data <- merged_rna_marker %>%
         filter(day %in% c(first_day, last_day)) %>%
-        dplyr::select(gene_id, sample, !!log2tpm_col, cco_levels) %>%
+        mutate(essential_genes = gene_id %in% essential_genes$x) %>%
+        dplyr::select(gene_id, sample, !!log2tpm_col, cco_levels, essential_genes) %>%
         pivot_wider(names_from = sample, values_from = !!log2tpm_col) %>%
-        unnest(cols = where(is.list))  
+        unnest(cols = where(is.list))
 
-      sample_combinations <- expand.grid(first_sample = first_day_samples, last_sample = last_day_samples, stringsAsFactors = FALSE)
-      print(sample_combinations)
+      sample_combinations <- expand.grid(
+        first_sample = first_day_samples, 
+        last_sample = last_day_samples, 
+        stringsAsFactors = FALSE
+      )
 
-      # Open PDF device
-      pdf(paste0(config$paths$figure_output, "/scatter_density_plot.pdf"))
+      pdf(paste0(config$paths$figure_output, "/scatter_density_plot_essential.pdf"), width = 60, height = 10)
 
-      # Create scatter plots for each pair of first day and last day sample
       for (i in 1:nrow(sample_combinations)) {
-        # Get the sample names for the current pair
         first_sample <- sample_combinations$first_sample[i]
         last_sample <- sample_combinations$last_sample[i]
-        
-        # Check if sample columns are available in the data
-        if (!(first_sample %in% colnames(plotting_data)) || !(last_sample %in% colnames(plotting_data))) {
-          warning(glue::glue("Sample {first_sample} or {last_sample} not found in plotting data. Skipping this pair."))
-          next  # Skip this pair if columns are not found
+
+        if (!(first_sample %in% colnames(plotting_data)) || 
+            !(last_sample %in% colnames(plotting_data))) {
+          warning(glue::glue("Sample {first_sample} or {last_sample} not found. Skipping."))
+          next
         }
-        result <- plot_with_pearson(plotting_data, first_sample, last_sample)
-        print(result$plot)    
-            
-        # Check if correlation_results is not NULL
+
+        result <- plot_with_correlations(plotting_data, first_sample, last_sample)
+        print(result$plot)
+
         if (!is.null(result$correlation_results)) {
-          # Combine correlation results into a single data frame
           result$correlation_results <- result$correlation_results %>%
-            mutate(Comparison = glue::glue("{first_sample} against {last_sample}")) %>%
-            dplyr::select(Comparison, cco_levels, cor_value)
-          
+            pivot_longer(cols = c("spearman", "pearson"), 
+                        names_to = "correlation_type", 
+                        values_to = "cor_value") %>%
+            mutate(Comparison = glue::glue("{first_sample} vs {last_sample}"))
+
           all_correlation_results <- bind_rows(all_correlation_results, result$correlation_results)
-        } else {
-          stop('empty correlation table')
         }
+      }
+
+      dev.off()
+
+      write.csv(all_correlation_results, 
+                paste0(config$paths$figure_output, "/pearson_spearman_correlation_results.csv"), 
+                row.names = FALSE)
+
+      print("Scatter density plots saved.")
+
+      .self$generate_spearman_lineplot(all_correlation_results)
+    },
+
+    generate_spearman_lineplot = function(correlation_results) {
+      print("Generating Spearman and Pearson correlation line plots...")
+
+      # Calculate summary statistics (mean, min, max) for each CCO level and correlation type
+      summary_data <- correlation_results %>%
+        group_by(correlation_type, essential_genes, cco_levels) %>%
+        summarize(
+          mean_cor = mean(cor_value, na.rm = TRUE),  # Mean correlation value
+          min_cor = min(cor_value, na.rm = TRUE),    # Min correlation value
+          max_cor = max(cor_value, na.rm = TRUE),    # Max correlation value
+          .groups = 'drop'
+        )
+
+      # Create a PDF to store both Pearson and Spearman line plots
+      pdf(paste0(config$paths$figure_output, "/corr_lineplot.pdf"), width = 10, height = 6)
+
+      # Loop through each correlation type (Spearman and Pearson) to generate separate plots
+      for (cor_type in unique(summary_data$correlation_type)) {
+        p <- ggplot(summary_data %>% filter(correlation_type == cor_type), 
+                    aes(x = cco_levels, y = mean_cor, color = essential_genes)) +
+          geom_line(size = 1) +  # Solid line for mean correlation
+          # Ribbon to represent the range (min to max) of correlation values
+          geom_ribbon(aes(ymin = min_cor, ymax = max_cor, fill = essential_genes), alpha = 0.2) +
+          scale_color_manual(values = c("TRUE" = "green", "FALSE" = "red")) +
+          scale_fill_manual(values = c("TRUE" = "green", "FALSE" = "red")) +
+          labs(
+            title = glue("Correlation Distribution ({cor_type}) across CCO Levels"),
+            x = "CCO Levels", y = glue("{cor_type} Correlation"),
+            color = "Essential Gene", fill = "Essential Gene"
+          ) +
+          theme_minimal()
+
+        print(p)
       }
 
       # Close the PDF device
       dev.off()
-      write.csv(all_correlation_results, paste0(config$paths$figure_output, "/pearson_correlation_results.csv"), row.names = FALSE)
 
-      message("Scatter density plot saved to PDF.")
+      print("Spearman and Pearson line plots saved.")
     },
     plot_histogram = function() {
       print("Generating histogram of gene counts...")
@@ -422,6 +491,7 @@ GeneExpressionAnalysis <- setRefClass(
     gen_dge_essentiality_lineplot = function(dge_results) {
       # Load DGE Results and Essential Genes
       essential_genes <- read.csv(config$paths$essential_genes_file, stringsAsFactors = FALSE)
+  
       
       # Add 'essential_genes' column to DGE results
       dge_results$essential_genes <- dge_results$genes %in% essential_genes$x
@@ -446,11 +516,11 @@ GeneExpressionAnalysis <- setRefClass(
                                       color = FDR_significant, linetype = essential_genes)) +
         geom_line(size = 1) +
         geom_point(size = 2) +
-        scale_color_manual(values = c("TRUE" = "red", "FALSE" = "green")) +
+        scale_color_manual(values = c("TRUE" = "green", "FALSE" = "red")) +
         labs(
           title = "Gene Counts Across CCO Levels",
           x = "CCO Levels Baskets", y = "Number of Genes",
-          color = "FDR < 0.05", linetype = "Essential Gene"
+          color = "Differentially expressed (FDR < 0.05)", linetype = "Essential Gene"
         ) +
         theme_minimal()
 
@@ -461,11 +531,11 @@ GeneExpressionAnalysis <- setRefClass(
                                       color = FDR_significant, linetype = essential_genes)) +
         geom_line(size = 1) +
         geom_point(size = 2) +
-        scale_color_manual(values = c("TRUE" = "red", "FALSE" = "green")) +
+        scale_color_manual(values = c("TRUE" = "green", "FALSE" = "red")) +
         labs(
           title = "Percentage of Genes Across CCO Levels",
           x = "CCO Levels", y = "Percentage of Genes",
-          color = "FDR < 0.05", linetype = "Essential Gene"
+          color = "Differentially expressed (FDR < 0.05)", linetype = "Essential Gene"
         ) +
         theme_minimal()
 
