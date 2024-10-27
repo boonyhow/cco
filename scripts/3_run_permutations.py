@@ -38,7 +38,7 @@ def create_directory(path):
 def run_rscript(config):
     # Adjust the config filename to include the variant structure
     config_filename = (
-        f"./config_files/config_{config['variables']['marker_type']}_"
+        f"./run_perm_configs/config_{config['variables']['marker_type']}_"
         f"{config['marker_variant']}_{config['rna_seq_cell_type']}.yaml"
     )
 

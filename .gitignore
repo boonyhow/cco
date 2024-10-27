@@ -8,3 +8,4 @@ tmp/
 *.xls
 *.xlsx
 *.txt
+run_perm_configs/
