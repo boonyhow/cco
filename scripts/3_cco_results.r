@@ -301,13 +301,15 @@ GeneExpressionAnalysis <- setRefClass(
 
       # Save results to Excel
       write_xlsx(list(DEGs = results), paste0(config$paths$figure_output, "/deg_results.xlsx"))
+      results$essential_genes_label <- ifelse(results$essential_genes, 
+                                              "ESSENTIAL GENES", "NON-ESSENTIAL GENES")
 
-      # Generate the volcano plot with facets for essential genes
+      # Generate the Volcano Plot
       pdf(paste0(config$paths$figure_output, "/volcano_plot_essential.pdf"), width = 28, height = 12)
 
       p <- ggplot(results, aes(x = logFC, y = -log10(PValue), col = -log10(FDR), label = label)) +
         geom_point(size = 4) +
-        facet_grid(essential_genes ~ cco_levels, scales = "free") +
+        facet_grid(essential_genes_label ~ cco_levels, scales = "free") +  # Use new labels
         scale_color_gradient2(low = "grey", mid = "grey", high = "red", midpoint = -log10(0.05)) +
         geom_vline(xintercept = 0, linetype = "dotted", size = 1) +
         geom_hline(yintercept = 0, linetype = "dotted", size = 1) +
@@ -316,15 +318,16 @@ GeneExpressionAnalysis <- setRefClass(
         theme(
           axis.text = element_text(size = 12),
           axis.title = element_text(size = 20, face = "bold"),
-          plot.title = element_text(size = 25, face = "bold"),
-          strip.text = element_text(size = 15, face = "bold"),
+          plot.title = element_text(size = 30, face = "bold"),
+          strip.text = element_text(size = 15, face = "bold"),  # Adjust facet label size and style
           legend.text = element_text(size = 18),
-          legend.title = element_text(size = 20, face = "bold")
+          legend.title = element_text(size = 30, face = "bold")
         ) +
         ggtitle("Volcano Plot of DGE with Facets for Essential Genes")
 
       print(p)
       dev.off()
+
       print("Volcano plot saved with facets.")
 
       # Generate line plot for DGE and essentiality
@@ -357,9 +360,9 @@ GeneExpressionAnalysis <- setRefClass(
             strip.text = element_text(size = 15),
             axis.text = element_text(size = 14),
             axis.title = element_text(size = 22, face = "bold"),
-            plot.title = element_text(size = 25, face = "bold"),
-            legend.text = element_text(size = 18),
-            legend.title = element_text(size = 20, face = "bold")
+            plot.title = element_text(size = 30, face = "bold"),
+            legend.text = element_text(size = 28),
+            legend.title = element_text(size = 30, face = "bold")
           )
 
         return(list(plot = p, correlation_results = correlation_results))
@@ -471,9 +474,9 @@ GeneExpressionAnalysis <- setRefClass(
                   theme(
                     axis.text = element_text(size = 14),
                     axis.title = element_text(size = 22, face = "bold"),
-                    plot.title = element_text(size = 25, face = "bold"),
-                    legend.text = element_text(size = 18),
-                    legend.title = element_text(size = 20, face = "bold")
+                    plot.title = element_text(size = 30, face = "bold"),
+                    legend.text = element_text(size = 28),
+                    legend.title = element_text(size = 30, face = "bold")
                   )
 
         print(p)
@@ -543,9 +546,9 @@ GeneExpressionAnalysis <- setRefClass(
         theme(
           axis.text = element_text(size = 14),
           axis.title = element_text(size = 22, face = "bold"),
-          plot.title = element_text(size = 25, face = "bold"),
-          legend.text = element_text(size = 18),
-          legend.title = element_text(size = 20, face = "bold")
+          plot.title = element_text(size = 30, face = "bold"),
+          legend.text = element_text(size = 28),
+          legend.title = element_text(size = 30, face = "bold")
         )
 
       print(p1)
@@ -558,7 +561,7 @@ GeneExpressionAnalysis <- setRefClass(
         scale_color_manual(values = c("TRUE" = "red", "FALSE" = "darkgreen"),
                           labels = c("TRUE" = "Essential Genes", "FALSE" = "Non-Essential Genes")) +
         scale_linetype_manual(values = c("TRUE" = "solid", "FALSE" = "dotted"),
-                              labels = c("TRUE" = "FDR < 0.05", "FALSE" = "FDR > 0.05")) +
+                              labels = c("TRUE" = "Differentially expressed (FDR < 0.05)", "FALSE" = "Not differentially expressed (FDR > 0.05)")) +
         labs(
           title = "Percentage of Genes Across CCO Levels",
           x = "CCO Levels", y = "Percentage of Genes",
@@ -568,9 +571,9 @@ GeneExpressionAnalysis <- setRefClass(
         theme(
           axis.text = element_text(size = 14),
           axis.title = element_text(size = 22, face = "bold"),
-          plot.title = element_text(size = 25, face = "bold"),
-          legend.text = element_text(size = 18),
-          legend.title = element_text(size = 20, face = "bold")
+          plot.title = element_text(size = 30, face = "bold"),
+          legend.text = element_text(size = 28),
+          legend.title = element_text(size = 30, face = "bold")
         )
 
       print(p2)
