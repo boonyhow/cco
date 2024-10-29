@@ -252,7 +252,7 @@ GeneExpressionAnalysis <- setRefClass(
             nrow = 2
           ) +
           theme(
-            axis.text.x = element_text(size = 15, angle = 90),
+            axis.text.x = element_text(size = 14, angle = 90),
             axis.title = element_text(size = 15, face = "bold"),
             strip.text.x = element_text(size = 10, face = "bold"),
             plot.title = element_text(size = 22, face = "bold"),
@@ -303,21 +303,28 @@ GeneExpressionAnalysis <- setRefClass(
       write_xlsx(list(DEGs = results), paste0(config$paths$figure_output, "/deg_results.xlsx"))
 
       # Generate the volcano plot with facets for essential genes
-      pdf(paste0(config$paths$figure_output, "/volcano_plot_essential.pdf"), width = 60, height = 8)
-      
+      pdf(paste0(config$paths$figure_output, "/volcano_plot_essential.pdf"), width = 28, height = 12)
+
       p <- ggplot(results, aes(x = logFC, y = -log10(PValue), col = -log10(FDR), label = label)) +
-        geom_point() +
-        facet_grid(essential_genes ~ cco_levels, scales = "free") +  # Facet by essential genes
+        geom_point(size = 4) +
+        facet_grid(essential_genes ~ cco_levels, scales = "free") +
         scale_color_gradient2(low = "grey", mid = "grey", high = "red", midpoint = -log10(0.05)) +
-        geom_vline(xintercept = 0, size = 0.5, linetype = "dotted") +
-        geom_hline(yintercept = 0, size = 0.5, linetype = "dotted") +
+        geom_vline(xintercept = 0, linetype = "dotted", size = 1) +
+        geom_hline(yintercept = 0, linetype = "dotted", size = 1) +
+        geom_text_repel(size = 6, max.overlaps = 15, col = "black") +  # Manage label overlap
         theme_bw() +
-        geom_text_repel(col = "black") +
-        ggtitle("Volcano plot of DGE with facets for essential genes")
+        theme(
+          axis.text = element_text(size = 12),
+          axis.title = element_text(size = 20, face = "bold"),
+          plot.title = element_text(size = 25, face = "bold"),
+          strip.text = element_text(size = 15, face = "bold"),
+          legend.text = element_text(size = 18),
+          legend.title = element_text(size = 20, face = "bold")
+        ) +
+        ggtitle("Volcano Plot of DGE with Facets for Essential Genes")
 
       print(p)
       dev.off()
-
       print("Volcano plot saved with facets.")
 
       # Generate line plot for DGE and essentiality
@@ -325,7 +332,6 @@ GeneExpressionAnalysis <- setRefClass(
     },
     scatter_density_plot = function() {
       plot_with_correlations <- function(plotting_data, first_sample, last_sample) {
-        # Calculate both Spearman and Pearson correlations
         correlation_results <- plotting_data %>%
           group_by(essential_genes, cco_levels) %>%
           summarize(
@@ -334,16 +340,13 @@ GeneExpressionAnalysis <- setRefClass(
             .groups = 'drop'
           )
 
-        # Create scatter plot with Spearman correlations displayed
         p <- ggplot(plotting_data, aes_string(x = first_sample, y = last_sample)) +
-          geom_bin2d(binwidth = c(0.5, 0.5)) +  # Add density bins
-          scale_fill_viridis_c(limits = c(0, 100)) +  # Keep fill scale consistent
-          facet_grid(essential_genes ~ cco_levels, scales = "free", 
-                    labeller = labeller(cco_levels = function(x) paste0("CCO ", x))) +
-          # Display Spearman correlation values in each facet
+          geom_bin2d(binwidth = c(0.5, 0.5)) +
+          scale_fill_viridis_c(limits = c(0, 100)) +
+          facet_grid(essential_genes ~ cco_levels, scales = "free") +
           geom_text(data = correlation_results, 
                     aes(x = Inf, y = Inf, label = round(spearman, 2)),
-                    inherit.aes = FALSE, vjust = 1, hjust = 1, size = 5, color = "red") +
+                    inherit.aes = FALSE, vjust = 1, hjust = 1, size = 6, color = "red") +
           theme_minimal() +
           labs(
             x = glue::glue("Log2TPM ({first_sample})"),
@@ -351,9 +354,12 @@ GeneExpressionAnalysis <- setRefClass(
             title = glue::glue("Scatter Plot: {first_sample} vs {last_sample}")
           ) +
           theme(
-            strip.text = element_text(size = 10),
-            axis.text = element_text(size = 10),
-            axis.title = element_text(size = 12, face = "bold")
+            strip.text = element_text(size = 15),
+            axis.text = element_text(size = 14),
+            axis.title = element_text(size = 22, face = "bold"),
+            plot.title = element_text(size = 25, face = "bold"),
+            legend.text = element_text(size = 18),
+            legend.title = element_text(size = 20, face = "bold")
           )
 
         return(list(plot = p, correlation_results = correlation_results))
@@ -392,7 +398,7 @@ GeneExpressionAnalysis <- setRefClass(
         stringsAsFactors = FALSE
       )
 
-      pdf(paste0(config$paths$figure_output, "/scatter_density_plot_essential.pdf"), width = 60, height = 10)
+      pdf(paste0(config$paths$figure_output, "/scatter_density_plot_essential.pdf"), width = 24, height = 12)
 
       for (i in 1:nrow(sample_combinations)) {
         first_sample <- sample_combinations$first_sample[i]
@@ -443,30 +449,37 @@ GeneExpressionAnalysis <- setRefClass(
         )
 
       # Create a PDF to store both Pearson and Spearman line plots
-      pdf(paste0(config$paths$figure_output, "/corr_lineplot.pdf"), width = 10, height = 6)
+      pdf(paste0(config$paths$figure_output, "/corr_lineplot.pdf"), width = 24, height = 12)
 
       # Loop through each correlation type (Spearman and Pearson) to generate separate plots
       for (cor_type in unique(summary_data$correlation_type)) {
-        p <- ggplot(summary_data %>% filter(correlation_type == cor_type), 
-                    aes(x = cco_levels, y = mean_cor, color = essential_genes)) +
-          geom_line(size = 1) +  # Solid line for mean correlation
-          # Ribbon to represent the range (min to max) of correlation values
-          geom_ribbon(aes(ymin = min_cor, ymax = max_cor, fill = essential_genes), alpha = 0.2) +
-          scale_color_manual(values = c("TRUE" = "green", "FALSE" = "red")) +
-          scale_fill_manual(values = c("TRUE" = "green", "FALSE" = "red")) +
-          labs(
-            title = glue("Correlation Distribution ({cor_type}) across CCO Levels"),
-            x = "CCO Levels", y = glue("{cor_type} Correlation"),
-            color = "Essential Gene", fill = "Essential Gene"
-          ) +
-          theme_minimal()
+        p <- ggplot(summary_data %>% filter(correlation_type == cor_type),
+                  aes(x = cco_levels, y = mean_cor, color = essential_genes)) +
+                  geom_line(size = 1.5) +
+                  geom_point(size = 3) +
+                  geom_ribbon(aes(ymin = min_cor, ymax = max_cor, fill = essential_genes), alpha = 0.2) +
+                  scale_color_manual(values = c("TRUE" = "red", "FALSE" = "darkgreen"), 
+                                   labels = c("TRUE" = "Essential Genes", "FALSE" = "Non-Essential Genes")) +
+                  scale_fill_manual(values = c("TRUE" = "red", "FALSE" = "darkgreen"), 
+                                  labels = c("TRUE" = "Essential Genes", "FALSE" = "Non-Essential Genes")) +
+                  labs(
+                    title = glue("Correlation Distribution ({cor_type}) Across CCO Levels"),
+                    x = "CCO Levels", y = glue("{cor_type} Correlation"),
+                    color = "Essential Gene", fill = "Essential Gene"
+                  ) +
+                  theme_minimal() +
+                  theme(
+                    axis.text = element_text(size = 14),
+                    axis.title = element_text(size = 22, face = "bold"),
+                    plot.title = element_text(size = 25, face = "bold"),
+                    legend.text = element_text(size = 18),
+                    legend.title = element_text(size = 20, face = "bold")
+                  )
 
         print(p)
       }
 
-      # Close the PDF device
-      dev.off()
-
+    dev.off()
       print("Spearman and Pearson line plots saved.")
     },
     plot_histogram = function() {
@@ -479,8 +492,8 @@ GeneExpressionAnalysis <- setRefClass(
           ylab("Counts") +
           ggtitle(glue('Histogram of counts of genes marked by "{config$variables$marker_type}" in different cell lines')) +
           theme(
-            axis.text.x = element_text(size = 20),
-            axis.text.y = element_text(size = 20),
+            axis.text.x = element_text(size = 14),
+            axis.text.y = element_text(size = 14),
             axis.title = element_text(size = 20, face = "bold"),
             plot.title = element_text(size = 22, face = "bold")
           )
@@ -510,40 +523,62 @@ GeneExpressionAnalysis <- setRefClass(
         summarize(gene_count = n(), .groups = 'drop') %>%
         left_join(total_count, by = "cco_levels") %>%
         mutate(percentage = 100 * (gene_count / total_gene_count))
-      pdf(file = glue("{config$paths$figure_output}/dge_essentials_lineplots.pdf"), width = 17, height = 10)
-      # Plot 1: Lineplot of gene counts vs. baskets
-      p1 <- ggplot(lineplot_data, aes(x = cco_levels, y = gene_count, 
-                                      color = FDR_significant, linetype = essential_genes)) +
-        geom_line(size = 1) +
-        geom_point(size = 2) +
-        scale_color_manual(values = c("TRUE" = "green", "FALSE" = "red")) +
+      # Create PDF to store the plots
+      pdf(file = glue("{config$paths$figure_output}/dge_essentials_lineplots.pdf"), width = 24, height = 12)
+
+     p1 <- ggplot(lineplot_data, aes(x = cco_levels, y = gene_count, 
+                                color = essential_genes, linetype = FDR_significant)) +
+        geom_line(size = 1.5) +  # Thicker lines
+        geom_point(size = 4) +   # Larger points
+        scale_color_manual(values = c("TRUE" = "red", "FALSE" = "darkgreen"),
+                          labels = c("TRUE" = "Essential Genes", "FALSE" = "Non-Essential Genes")) +
+        scale_linetype_manual(values = c("TRUE" = "solid", "FALSE" = "dotted"),
+                              labels = c("TRUE" = "Differentially expressed (FDR < 0.05)", "FALSE" = "Not differentially expressed (FDR > 0.05)")) +
         labs(
           title = "Gene Counts Across CCO Levels",
-          x = "CCO Levels Baskets", y = "Number of Genes",
-          color = "Differentially expressed (FDR < 0.05)", linetype = "Essential Gene"
+          x = "CCO Levels", y = "Number of Genes",
+          color = "Gene Type", linetype = "FDR Significance"
         ) +
-        theme_minimal()
+        theme_minimal() +
+        theme(
+          axis.text = element_text(size = 14),
+          axis.title = element_text(size = 22, face = "bold"),
+          plot.title = element_text(size = 25, face = "bold"),
+          legend.text = element_text(size = 18),
+          legend.title = element_text(size = 20, face = "bold")
+        )
 
       print(p1)
 
-      # Plot 2: Lineplot of percentages vs. baskets
+      # Generate the second plot: Percentage of Genes Across CCO Levels
       p2 <- ggplot(lineplot_data, aes(x = cco_levels, y = percentage, 
-                                      color = FDR_significant, linetype = essential_genes)) +
-        geom_line(size = 1) +
-        geom_point(size = 2) +
-        scale_color_manual(values = c("TRUE" = "green", "FALSE" = "red")) +
+                                      color = essential_genes, linetype = FDR_significant)) +
+        geom_line(size = 1.5) +  # Thicker lines
+        geom_point(size = 4) +   # Larger points
+        scale_color_manual(values = c("TRUE" = "red", "FALSE" = "darkgreen"),
+                          labels = c("TRUE" = "Essential Genes", "FALSE" = "Non-Essential Genes")) +
+        scale_linetype_manual(values = c("TRUE" = "solid", "FALSE" = "dotted"),
+                              labels = c("TRUE" = "FDR < 0.05", "FALSE" = "FDR > 0.05")) +
         labs(
           title = "Percentage of Genes Across CCO Levels",
           x = "CCO Levels", y = "Percentage of Genes",
-          color = "Differentially expressed (FDR < 0.05)", linetype = "Essential Gene"
+          color = "Gene Type", linetype = "FDR Significance"
         ) +
-        theme_minimal()
+        theme_minimal() +
+        theme(
+          axis.text = element_text(size = 14),
+          axis.title = element_text(size = 22, face = "bold"),
+          plot.title = element_text(size = 25, face = "bold"),
+          legend.text = element_text(size = 18),
+          legend.title = element_text(size = 20, face = "bold")
+        )
 
       print(p2)
 
+      # Close the PDF device
       dev.off()
-      print("Lineplots generated and saved successfully.")
 
+      print("DGE essentiality line plots saved successfully.")
     },
     
     save_results = function() {
