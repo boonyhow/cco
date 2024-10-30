@@ -452,7 +452,7 @@ GeneExpressionAnalysis <- setRefClass(
         )
 
       # Create a PDF to store both Pearson and Spearman line plots
-      pdf(paste0(config$paths$figure_output, "/corr_lineplot.pdf"), width = 15, height = 15)
+      pdf(paste0(config$paths$figure_output, "/corr_lineplot.pdf"), width = 15, height = 10)
 
       # Loop through each correlation type (Spearman and Pearson) to generate separate plots
       for (cor_type in unique(summary_data$correlation_type)) {
@@ -530,7 +530,7 @@ GeneExpressionAnalysis <- setRefClass(
         left_join(total_count, by = "cco_levels") %>%
         mutate(percentage = 100 * (gene_count / total_gene_count))
       # Create PDF to store the plots
-      pdf(file = glue("{config$paths$figure_output}/dge_essentials_lineplots.pdf"), width = 15, height = 15)
+      pdf(file = glue("{config$paths$figure_output}/dge_essentials_lineplots.pdf"), width = 15, height = 10)
 
      p1 <- ggplot(lineplot_data, aes(x = cco_levels, y = gene_count, 
                                 color = essential_genes, linetype = FDR_significant)) +
