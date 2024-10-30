@@ -452,7 +452,7 @@ GeneExpressionAnalysis <- setRefClass(
         )
 
       # Create a PDF to store both Pearson and Spearman line plots
-      pdf(paste0(config$paths$figure_output, "/corr_lineplot.pdf"), width = 24, height = 12)
+      pdf(paste0(config$paths$figure_output, "/corr_lineplot.pdf"), width = 15, height = 15)
 
       # Loop through each correlation type (Spearman and Pearson) to generate separate plots
       for (cor_type in unique(summary_data$correlation_type)) {
@@ -472,11 +472,14 @@ GeneExpressionAnalysis <- setRefClass(
                   ) +
                   theme_minimal() +
                   theme(
-                    axis.text = element_text(size = 14),
-                    axis.title = element_text(size = 22, face = "bold"),
+                    axis.text = element_text(size = 30),
+                    axis.title = element_text(size = 30, face = "bold"),
                     plot.title = element_text(size = 30, face = "bold"),
-                    legend.text = element_text(size = 28),
-                    legend.title = element_text(size = 30, face = "bold")
+                    legend.text = element_text(size = 30),
+                    legend.title = element_text(size = 30, face = "bold"), 
+                    legend.position = c(0.85, 0.1),  # Adjust this to position the legend inside the plot
+                    legend.background = element_rect(fill = alpha('white', 0.5)), # Semi-transparent background
+                    legend.box.background = element_rect(color = "black", size = 0.5) # Optional border
                   )
 
         print(p)
@@ -527,7 +530,7 @@ GeneExpressionAnalysis <- setRefClass(
         left_join(total_count, by = "cco_levels") %>%
         mutate(percentage = 100 * (gene_count / total_gene_count))
       # Create PDF to store the plots
-      pdf(file = glue("{config$paths$figure_output}/dge_essentials_lineplots.pdf"), width = 24, height = 12)
+      pdf(file = glue("{config$paths$figure_output}/dge_essentials_lineplots.pdf"), width = 15, height = 15)
 
      p1 <- ggplot(lineplot_data, aes(x = cco_levels, y = gene_count, 
                                 color = essential_genes, linetype = FDR_significant)) +
@@ -544,11 +547,13 @@ GeneExpressionAnalysis <- setRefClass(
         ) +
         theme_minimal() +
         theme(
-          axis.text = element_text(size = 14),
-          axis.title = element_text(size = 22, face = "bold"),
+          axis.text = element_text(size = 30, face = 'bold'),
+          axis.title = element_text(size = 30, face = "bold"),
           plot.title = element_text(size = 30, face = "bold"),
-          legend.text = element_text(size = 28),
-          legend.title = element_text(size = 30, face = "bold")
+          legend.text = element_text(size = 30),
+          legend.title = element_text(size = 30, face = "bold"), 
+          legend.position = c(0.5, 0.8),  # Adjust this to position the legend inside the plot
+          legend.background = element_rect(fill = alpha('white', 0.5)), # Semi-transparent background
         )
 
       print(p1)
@@ -569,11 +574,13 @@ GeneExpressionAnalysis <- setRefClass(
         ) +
         theme_minimal() +
         theme(
-          axis.text = element_text(size = 14),
-          axis.title = element_text(size = 22, face = "bold"),
+          axis.text = element_text(size = 30, face = 'bold'),
+          axis.title = element_text(size = 30, face = "bold"),
           plot.title = element_text(size = 30, face = "bold"),
-          legend.text = element_text(size = 28),
-          legend.title = element_text(size = 30, face = "bold")
+          legend.text = element_text(size = 30),
+          legend.title = element_text(size = 30, face = "bold"),
+          legend.position = c(0.5, 0.8),  # Adjust this to position the legend inside the plot
+          legend.background = element_rect(fill = alpha('white', 0.5)), # Semi-transparent background
         )
 
       print(p2)
