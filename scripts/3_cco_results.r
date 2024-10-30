@@ -268,10 +268,11 @@ GeneExpressionAnalysis <- setRefClass(
         message("Ridge plot saved to PDF.")
       },
 
-    generate_volcano_plot = function(top_tags) {
+   generate_volcano_plot = function(top_tags) {
       print("Generating volcano plot and merging results...")
+      
+      # Load essential genes
       essential_genes <- read.csv(config$paths$essential_genes_file, stringsAsFactors = FALSE)
-  
       
       # Merge top_tags with merged_rna_marker
       top_tags_df <- as.data.frame(top_tags)
@@ -286,10 +287,11 @@ GeneExpressionAnalysis <- setRefClass(
         top_tags_df, merged_data, 
         by.x = 'genes', by.y = 'gene_id', all.x = TRUE
       ))
-
+      
       # Ensure consistent data types for comparison with essential genes
       results$genes <- as.character(results$genes)
       print(head(results$genes))
+
       # Debugging: Check if essential genes are properly matched
       results$essential_genes <- results$genes %in% essential_genes$x  # Mark essential genes
       print(table(results$essential_genes))  # Check distribution of TRUE/FALSE values
@@ -301,25 +303,28 @@ GeneExpressionAnalysis <- setRefClass(
 
       # Save results to Excel
       write_xlsx(list(DEGs = results), paste0(config$paths$figure_output, "/deg_results.xlsx"))
-      results$essential_genes_label <- ifelse(results$essential_genes, 
-                                              "ESSENTIAL GENES", "PUTATIVE CELL-SPECIFIC")
+      
+      results$essential_genes_label <- ifelse(
+        results$essential_genes, 
+        "ESSENTIAL GENES", "PUTATIVE CELL-SPECIFIC"
+      )
 
-      # Generate the Volcano Plot
+      # --- Volcano Plot ---
       pdf(paste0(config$paths$figure_output, "/volcano_plot_essential.pdf"), width = 28, height = 12)
 
       p <- ggplot(results, aes(x = logFC, y = -log10(PValue), col = -log10(FDR), label = label)) +
         geom_point(size = 4) +
-        facet_grid(essential_genes_label ~ cco_levels, scales = "free") +  # Use new labels
+        facet_grid(essential_genes_label ~ cco_levels, scales = "free") +
         scale_color_gradient2(low = "grey", mid = "grey", high = "red", midpoint = -log10(0.05)) +
         geom_vline(xintercept = 0, linetype = "dotted", size = 1) +
         geom_hline(yintercept = 0, linetype = "dotted", size = 1) +
-        geom_text_repel(size = 6, max.overlaps = 15, col = "black") +  # Manage label overlap
+        geom_text_repel(size = 6, max.overlaps = 15, col = "black") +
         theme_bw() +
         theme(
           axis.text = element_text(size = 12),
           axis.title = element_text(size = 20, face = "bold"),
           plot.title = element_text(size = 30, face = "bold"),
-          strip.text = element_text(size = 15, face = "bold"),  # Adjust facet label size and style
+          strip.text = element_text(size = 15, face = "bold"),
           legend.text = element_text(size = 18),
           legend.title = element_text(size = 30, face = "bold")
         ) +
@@ -327,8 +332,46 @@ GeneExpressionAnalysis <- setRefClass(
 
       print(p)
       dev.off()
-
       print("Volcano plot saved with facets.")
+
+     # --- Faceted KDE Plot for logFC across CCO Levels and Essential Genes ---
+      pdf(paste0(config$paths$figure_output, "/kde_plot_logFC_facet.pdf"), width = 28, height = 12)
+
+      p_kde <- ggplot(results, aes(x = logFC, fill = essential_genes_label)) +
+        geom_density(alpha = 0.5) +
+        facet_grid(essential_genes_label ~ cco_levels, scales = "free") +  # Faceted by CCO levels and essential genes
+        scale_fill_manual(values = c("ESSENTIAL GENES" = "red", "PUTATIVE CELL-SPECIFIC" = "darkgreen")) + 
+        theme_bw() +
+        theme(
+          axis.text = element_text(size = 30),
+          axis.title = element_text(size = 30, face = "bold"),
+          plot.title = element_text(size = 30, face = "bold"),
+          strip.text = element_text(size = 20, face = "bold"),  # Adjust facet label size and style
+          legend.position = "none"
+        ) +
+        ggtitle("KDE Plot of logFC by Essential Genes and CCO Levels") +
+        xlab("logFC") + ylab("Density") 
+
+      # Boxplot
+      p_boxplot <- ggplot(results, aes(x = as.factor(cco_levels), y = logFC, fill = essential_genes_label)) +
+        geom_boxplot() +
+        facet_grid(essential_genes_label ~ cco_levels, scales = "free") +  # Faceted by CCO levels and essential genes
+        scale_fill_manual(values = c("ESSENTIAL GENES" = "red", "PUTATIVE CELL-SPECIFIC" = "darkgreen")) + 
+        theme_bw() +
+        theme(
+          axis.text = element_text(size = 30),
+          axis.title = element_text(size = 30, face = "bold"),
+          plot.title = element_text(size = 30, face = "bold"),
+          strip.text = element_text(size = 20, face = "bold"),  # Adjust facet label size and style
+          legend.position = "none"
+        ) +
+        ggtitle("Boxplot of logFC by Essential Genes and CCO Levels") +
+        xlab("CCO Levels") + ylab("logFC") 
+      print(p_kde)
+      print(p_boxplot)
+      dev.off()
+
+      print("KDE plot saved.")
 
       # Generate line plot for DGE and essentiality
       .self$gen_dge_essentiality_lineplot(results)
