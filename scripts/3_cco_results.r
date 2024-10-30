@@ -302,7 +302,7 @@ GeneExpressionAnalysis <- setRefClass(
       # Save results to Excel
       write_xlsx(list(DEGs = results), paste0(config$paths$figure_output, "/deg_results.xlsx"))
       results$essential_genes_label <- ifelse(results$essential_genes, 
-                                              "ESSENTIAL GENES", "NON-ESSENTIAL GENES")
+                                              "ESSENTIAL GENES", "PUTATIVE CELL-SPECIFIC")
 
       # Generate the Volcano Plot
       pdf(paste0(config$paths$figure_output, "/volcano_plot_essential.pdf"), width = 28, height = 12)
@@ -462,9 +462,9 @@ GeneExpressionAnalysis <- setRefClass(
                   geom_point(size = 3) +
                   geom_ribbon(aes(ymin = min_cor, ymax = max_cor, fill = essential_genes), alpha = 0.2) +
                   scale_color_manual(values = c("TRUE" = "red", "FALSE" = "darkgreen"), 
-                                   labels = c("TRUE" = "Essential Genes", "FALSE" = "Non-Essential Genes")) +
+                                   labels = c("TRUE" = "Essential Genes", "FALSE" = "Putative cell-specific")) +
                   scale_fill_manual(values = c("TRUE" = "red", "FALSE" = "darkgreen"), 
-                                  labels = c("TRUE" = "Essential Genes", "FALSE" = "Non-Essential Genes")) +
+                                  labels = c("TRUE" = "Essential Genes", "FALSE" = "Putative cell-specific")) +
                   labs(
                     title = glue("Correlation Distribution ({cor_type}) Across CCO Levels"),
                     x = "CCO Levels", y = glue("{cor_type} Correlation"),
@@ -537,7 +537,7 @@ GeneExpressionAnalysis <- setRefClass(
         geom_line(size = 1.5) +  # Thicker lines
         geom_point(size = 4) +   # Larger points
         scale_color_manual(values = c("TRUE" = "red", "FALSE" = "darkgreen"),
-                          labels = c("TRUE" = "Essential Genes", "FALSE" = "Non-Essential Genes")) +
+                          labels = c("TRUE" = "Essential Genes", "FALSE" = "Putative cell-specific")) +
         scale_linetype_manual(values = c("TRUE" = "solid", "FALSE" = "dotted"),
                               labels = c("TRUE" = "Differentially expressed (FDR < 0.05)", "FALSE" = "Not differentially expressed (FDR > 0.05)")) +
         labs(
@@ -564,7 +564,7 @@ GeneExpressionAnalysis <- setRefClass(
         geom_line(size = 1.5) +  # Thicker lines
         geom_point(size = 4) +   # Larger points
         scale_color_manual(values = c("TRUE" = "red", "FALSE" = "darkgreen"),
-                          labels = c("TRUE" = "Essential Genes", "FALSE" = "Non-Essential Genes")) +
+                          labels = c("TRUE" = "Essential Genes", "FALSE" = "Putative cell-specific")) +
         scale_linetype_manual(values = c("TRUE" = "solid", "FALSE" = "dotted"),
                               labels = c("TRUE" = "Differentially expressed (FDR < 0.05)", "FALSE" = "Not differentially expressed (FDR > 0.05)")) +
         labs(

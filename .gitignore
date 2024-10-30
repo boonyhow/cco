@@ -9,3 +9,12 @@ tmp/
 *.xlsx
 *.txt
 run_perm_configs/
+**/volcano_plot.pdf
+**/scatter_density_plot_essential.pdf
+**/scatter_density_plot.pdf
+**/gene_expression_plots.pdf
+# macOS system files
+.DS_Store
+
+# Python cache files
+__pycache__/

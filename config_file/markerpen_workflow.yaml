@@ -1,0 +1,13 @@
+r_script:
+  input_data: "./results/3_cco_results/dnase/full_15/imac/merged_table.csv"
+  output_folder: "./results/markerpen/dnase_indiv/imac/"
+  filter_day: "max"  # Can be "min" or "max"
+  refine_markers_params:
+    lambda: 0.35
+    w: 1.5
+    maxit: 100
+    eps: 0.001
+    verbose: 1
+python_script:
+  log_file: "start_run.log"
+  pdf_file: "start_cco_plots.pdf"
