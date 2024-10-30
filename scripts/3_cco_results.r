@@ -477,7 +477,7 @@ GeneExpressionAnalysis <- setRefClass(
                     plot.title = element_text(size = 30, face = "bold"),
                     legend.text = element_text(size = 30),
                     legend.title = element_text(size = 30, face = "bold"), 
-                    legend.position = c(0.85, 0.1),  # Adjust this to position the legend inside the plot
+                    legend.position = c(0.75, 0.1),  # Adjust this to position the legend inside the plot
                     legend.background = element_rect(fill = alpha('white', 0.5)), # Semi-transparent background
                     legend.box.background = element_rect(color = "black", size = 0.5) # Optional border
                   )
